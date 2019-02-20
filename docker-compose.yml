@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  nginx:
+    build:
+      context: docker/config/nginx
+    volumes:
+      - ./auth:/var/www
+    ports:
+      - "3000:80"
+    links:
+      - auth
+
+## Auth Microservice
+  auth:
+    build:
+      context: docker/auth
+    volumes:
+      - ./auth:/var/www
+    links:
+      - db
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=db
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=dockerApp
+    ports:
+      - "33061:3306"
