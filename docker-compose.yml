@@ -2,6 +2,7 @@ version: '2'
 
 services:
   nginx:
+    container_name: nginx
     build:
       context: docker/config/nginx
     volumes:
@@ -10,9 +11,12 @@ services:
       - "3000:80"
     links:
       - auth
+    networks:
+      - appnet
 
 ## Auth Microservice
   auth:
+    container_name: auth
     build:
       context: docker/auth
     volumes:
@@ -22,10 +26,19 @@ services:
     environment:
       - DB_PORT=3306
       - DB_HOST=db
+    networks:
+      - appnet
   db:
+    container_name: auth_db
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=dockerApp
     ports:
       - "33061:3306"
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: "bridge"
