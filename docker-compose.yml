@@ -6,26 +6,25 @@ services:
     build:
       context: docker/config/nginx
     volumes:
-      - ./auth:/var/www
+      - ./:/var/www
     ports:
       - "3000:80"
     links:
       - auth
+      - content
     networks:
       - appnet
 
 ## Auth Microservice
   auth:
     container_name: auth
+    env_file: '.env'
     build:
       context: docker/auth
     volumes:
       - ./auth:/var/www
     links:
       - db
-    environment:
-      - DB_PORT=3306
-      - DB_HOST=db
     networks:
       - appnet
   db:
@@ -36,6 +35,17 @@ services:
       - MYSQL_DATABASE=dockerApp
     ports:
       - "33061:3306"
+    networks:
+      - appnet
+
+  ## Auth Microservice
+  content:
+    container_name: content
+    env_file: '.env'
+    build:
+      context: docker/content
+    volumes:
+      - ./content:/var/www
     networks:
       - appnet
 

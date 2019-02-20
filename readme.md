@@ -10,18 +10,13 @@ Setup laravel auth
 ```
 $ cd auth
 $ composer install
-$ cp .env.example .env
-$ php artisan key:generate
 ```
 
 Setup laravel content
 ```
 $ cd content
 $ composer install
-$ cp .env.example .env
 ```
-
-For this example you will be best copying the .env key across each microservice in the future we will look at just having 1 .env file :)
 
 Start Docker
 ```
