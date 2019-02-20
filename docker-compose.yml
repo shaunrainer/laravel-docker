@@ -4,7 +4,7 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: docker/config/nginx
+      context: docker/nginx
     volumes:
       - ./:/var/www
     ports:
@@ -20,7 +20,7 @@ services:
     container_name: auth
     env_file: '.env'
     build:
-      context: docker/auth
+      context: auth
     volumes:
       - ./auth:/var/www
     links:
@@ -43,7 +43,7 @@ services:
     container_name: content
     env_file: '.env'
     build:
-      context: docker/content
+      context: content
     volumes:
       - ./content:/var/www
     networks:
